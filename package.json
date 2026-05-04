@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "deploy": "ng build --base-href /WeddingPage/ && npx ngh --dir=dist/WeddingPage/browser",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -25,6 +26,7 @@
     "@angular/cli": "^21.2.8",
     "@angular/compiler-cli": "^21.2.0",
     "@tailwindcss/postcss": "^4.2.4",
+    "angular-cli-ghpages": "^3.0.3",
     "autoprefixer": "^10.5.0",
     "jsdom": "^28.0.0",
     "postcss": "^8.5.13",
