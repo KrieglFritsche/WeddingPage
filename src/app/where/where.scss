@@ -44,7 +44,7 @@
 
   img {
     width: 100%;
-    height: 12rem;
+    height: 20rem;
     object-fit: cover;
     display: block;
   }
@@ -78,8 +78,8 @@
     transition: transform 0.2s;
   }
 
-  &:hover {
-    background: var(--color-secondary-container);
+  &:hover, &:active {
+    background: #f5f0eb;
 
     .material-symbols-outlined {
       transform: translateX(4px);

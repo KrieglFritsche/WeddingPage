@@ -17,13 +17,14 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
   }
 }
 
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.45), transparent);
+  background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.1) 50%, transparent 100%);
 }
 
 .hero-content {
@@ -31,22 +32,42 @@
   z-index: 1;
   text-align: center;
   padding: 0 1.5rem;
-  margin-bottom: 5rem;
+  margin-bottom: 6rem;
   color: #fff;
 
   h1 {
     font-family: var(--font-serif);
-    font-size: clamp(3rem, 10vw, 7rem);
+    font-size: clamp(3rem, 10vw, 3.75rem);
     font-style: italic;
     font-weight: 400;
     line-height: 1.1;
-    margin-bottom: 0.5rem;
   }
+}
 
-  p {
-    font-family: var(--font-serif);
-    font-size: 1.75rem;
-    font-weight: 300;
-    color: rgba(255,255,255,0.9);
-  }
+.hero-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.25rem auto;
+  width: min(14rem, 70vw);
+}
+
+.hero-divider-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.hero-ornament {
+  flex: none;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.5rem;
+}
+
+.hero-date {
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  font-weight: 300;
+  letter-spacing: 0.4em;
+  color: rgba(255, 255, 255, 0.8);
 }

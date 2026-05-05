@@ -1,5 +1,8 @@
 main {
-  padding-bottom: 0;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: var(--color-surface);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.08);
 }
 
 .site-footer {
