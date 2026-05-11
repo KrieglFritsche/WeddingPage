@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
   styleUrl: './rsvp.scss',
 })
 export class Rsvp implements OnInit, OnDestroy {
-  private readonly STORAGE_KEY = 'rsvp_submitted';
+  // private readonly STORAGE_KEY = 'rsvp_submitted';
   private subs = new Subscription();
 
   isSubmitted = signal(false); // localStorage.getItem(this.STORAGE_KEY) === 'true'
