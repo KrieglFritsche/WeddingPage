@@ -1,7 +1,8 @@
 .rsvp-fab {
-  position: absolute;
+  position: fixed;
   top: 1rem;
   right: 1rem;
+  z-index: 100;
   background-color: var(--color-secondary);
   color: #fff;
   border: none;
