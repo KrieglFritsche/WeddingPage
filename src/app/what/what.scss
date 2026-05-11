@@ -9,6 +9,7 @@
     height: auto;
     display: block;
     margin-top: -100px;
+    transform: scaleX(-1);
   }
 }
 
@@ -36,24 +37,11 @@
   }
 }
 
-.hero-divider {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin: 1.25rem auto;
-  width: min(14rem, 70vw);
-}
-
-.hero-divider-line {
-  flex: 1;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.4);
-}
-
 .hero-date {
   font-family: var(--font-sans);
   font-size: 1.25rem;
-  font-weight: 300;
+  font-weight: 500;
   letter-spacing: 0.4em;
   color: rgba(255, 255, 255, 0.8);
+  margin-top: 1.25rem;
 }

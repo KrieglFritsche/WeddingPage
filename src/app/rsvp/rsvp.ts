@@ -16,6 +16,7 @@ export class Rsvp implements OnInit, OnDestroy {
   isOpen = signal(false);
 
   form = new FormGroup({
+    website:       new FormControl(''),
     name:          new FormControl('', [Validators.required, Validators.maxLength(100)]),
     attending:     new FormControl('', Validators.required),
     plusone:       new FormControl('', Validators.maxLength(100)),
@@ -126,6 +127,35 @@ export class Rsvp implements OnInit, OnDestroy {
 
   submit() {
     if (this.form.invalid) return;
+    if (this.form.value.website) return;
+
+    const v = this.form.value;
+    const body = new URLSearchParams({
+      'entry.877086558':  v.name            ?? '',
+      'entry.137018687':  v.attending        ?? '',
+      'entry.949345539':  v.absence          ?? '',
+      'entry.1269124808': v.plusone          ?? '',
+      'entry.1938261187': v.plusonename      ?? '',
+      'entry.1839326576': v.phone            ?? '',
+      'entry.869140314':  v.children         ?? '',
+      'entry.117133777':  v.childrenneeds    ?? '',
+      'entry.735818631':  v.food             ?? '',
+      'entry.1885540145': v.allergies        ?? '',
+      'entry.1951095919': v.show             ?? '',
+      'entry.1059383757': v.showlength       ?? '',
+      'entry.389945756':  v.showbeamer       ?? '',
+      'entry.1791217335': v.music            ?? '',
+      'entry.916521135':  v.special          ?? '',
+      'entry.2606285':    '',
+    });
+
+    fetch('https://docs.google.com/forms/d/e/1FAIpQLSfYS7Hkr20j7eVfEgQMu8OW5C0I4sjGrPU30ItKU5p6ya5kTw/formResponse', {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: body.toString(),
+    });
+
     // localStorage.setItem(this.STORAGE_KEY, 'true');
     this.isSubmitted.set(true);
   }
