@@ -1,0 +1,237 @@
+@if (!isSubmitted()) {
+  <button class="rsvp-fab" (click)="open()">RSVP</button>
+}
+
+@if (isOpen()) {
+  <div class="rsvp-overlay" (click)="close()">
+    <div class="rsvp-sheet" (click)="$event.stopPropagation()">
+
+      @if (isSubmitted()) {
+        <div class="rsvp-success">
+          <p class="rsvp-success-title">Vielen Dank für eure Rückmeldung ❤️</p>
+          <p class="rsvp-success-body">Bei Fragen könnt ihr euch jederzeit bei uns persönlich melden.</p>
+          <button class="rsvp-submit" type="button" (click)="close()">Schliessen</button>
+        </div>
+      } @else {
+
+      <div class="rsvp-header">
+        <h2>RSVP</h2>
+        <button class="rsvp-close" (click)="close()" type="button">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form class="rsvp-form" [formGroup]="form" (ngSubmit)="submit()">
+
+        <div class="form-field">
+          <label for="name">Name <span class="req">*</span></label>
+          <input
+            id="name"
+            type="text"
+            formControlName="name"
+            placeholder="Dein vollständiger Name"
+            autocomplete="name"
+            maxlength="100"
+          />
+        </div>
+
+        <div class="form-field">
+          <label>Teilnahme <span class="req">*</span></label>
+          <div class="radio-group">
+            <label class="radio-option" [class.selected]="attending === 'Ja'">
+              <input type="radio" formControlName="attending" value="Ja" />
+              <span>Ich nehme gerne teil 🎉</span>
+            </label>
+            <label class="radio-option" [class.selected]="attending === 'Nein'">
+              <input type="radio" formControlName="attending" value="Nein" />
+              <span>Ich nehme leider nicht teil 😅</span>
+            </label>
+          </div>
+        </div>
+
+        @if (attending === 'Nein') {
+          <div class="form-field">
+            <label>Was trifft zu? <span class="req">*</span></label>
+            <div class="radio-group">
+              <label class="radio-option" [class.selected]="absence === 'Ganzer Tag'">
+                <input type="radio" formControlName="absence" value="Ganzer Tag" />
+                <span>Wir können leider den ganzen Tag nicht teilnehmen</span>
+              </label>
+              <label class="radio-option" [class.selected]="absence === 'Gratulieren'">
+                <input type="radio" formControlName="absence" value="Gratulieren" />
+                <span>Wir haben leider keine Zeit für die Feier, möchten aber gerne nach dem Standesamt (ca. 14:20 Uhr) persönlich gratulieren</span>
+              </label>
+            </div>
+          </div>
+        }
+
+        @if (attending === 'Ja') {
+
+          <div class="form-field">
+            <label>Begleitung <span class="req">*</span></label>
+            <div class="radio-group">
+              <label class="radio-option" [class.selected]="plusone === 'Ja'">
+                <input type="radio" formControlName="plusone" value="Ja" />
+                <span>Ja</span>
+              </label>
+              <label class="radio-option" [class.selected]="plusone === 'Nein'">
+                <input type="radio" formControlName="plusone" value="Nein" />
+                <span>Nein</span>
+              </label>
+            </div>
+          </div>
+
+          @if (plusone === 'Ja') {
+            <div class="form-field">
+              <label for="plusonename">Name der Begleitung <span class="req">*</span></label>
+              <input
+                id="plusonename"
+                type="text"
+                formControlName="plusonename"
+                placeholder="Vollständiger Name"
+                maxlength="100"
+              />
+            </div>
+          }
+
+          <div class="form-field">
+            <label for="phone">Bevorzugter Kontakt (Email/Tel.) <span class="req">*</span></label>
+            <input
+              id="phone"
+              type="text"
+              formControlName="phone"
+              placeholder="email@example.com oder +43 ..."
+              maxlength="100"
+            />
+          </div>
+
+          <div class="form-field">
+            <label>Kinder dabei? <span class="req">*</span></label>
+            <div class="radio-group">
+              <label class="radio-option" [class.selected]="children === 'Ja'">
+                <input type="radio" formControlName="children" value="Ja" />
+                <span>Ja</span>
+              </label>
+              <label class="radio-option" [class.selected]="children === 'Nein'">
+                <input type="radio" formControlName="children" value="Nein" />
+                <span>Nein</span>
+              </label>
+            </div>
+          </div>
+
+          @if (children === 'Ja') {
+            <div class="form-field">
+              <label for="childrenneeds">Spezialbedarf für Kinder</label>
+              <textarea
+                id="childrenneeds"
+                formControlName="childrenneeds"
+                placeholder="Hochstuhl, Babyphon, ..."
+                maxlength="999"
+                rows="3"
+              ></textarea>
+            </div>
+          }
+
+          <div class="form-field">
+            <label>Essen <span class="req">*</span></label>
+            <div class="radio-group">
+              <label class="radio-option" [class.selected]="food === 'Vegan'">
+                <input type="radio" formControlName="food" value="Vegan" />
+                <span>Vegan 🌱</span>
+              </label>
+              <label class="radio-option" [class.selected]="food === 'Vegi'">
+                <input type="radio" formControlName="food" value="Vegi" />
+                <span>Vegi 🧀</span>
+              </label>
+              <label class="radio-option" [class.selected]="food === 'Alles'">
+                <input type="radio" formControlName="food" value="Alles" />
+                <span>Alles 🥩</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="allergies">Allergien <span class="req">*</span></label>
+            <input
+              id="allergies"
+              type="text"
+              formControlName="allergies"
+              placeholder="z.B. Nüsse, Gluten, ..."
+              maxlength="100"
+            />
+          </div>
+
+          <div class="form-field">
+            <label>Beitrag geplant? <span class="req">*</span></label>
+            <div class="radio-group">
+              <label class="radio-option" [class.selected]="show === 'Ja'">
+                <input type="radio" formControlName="show" value="Ja" />
+                <span>Ja</span>
+              </label>
+              <label class="radio-option" [class.selected]="show === 'Nein'">
+                <input type="radio" formControlName="show" value="Nein" />
+                <span>Nein</span>
+              </label>
+            </div>
+          </div>
+
+          @if (show === 'Ja') {
+            <div class="form-field">
+              <label for="showlength">Beitrag Länge <span class="req">*</span></label>
+              <input
+                id="showlength"
+                type="text"
+                formControlName="showlength"
+                placeholder="z.B. 5 Minuten"
+                maxlength="100"
+              />
+            </div>
+
+            <div class="form-field">
+              <label>Beamer oder Leinwand benötigt? <span class="req">*</span></label>
+              <div class="radio-group">
+                <label class="radio-option" [class.selected]="showbeamer === 'Ja'">
+                  <input type="radio" formControlName="showbeamer" value="Ja" />
+                  <span>Ja</span>
+                </label>
+                <label class="radio-option" [class.selected]="showbeamer === 'Nein'">
+                  <input type="radio" formControlName="showbeamer" value="Nein" />
+                  <span>Nein</span>
+                </label>
+              </div>
+            </div>
+          }
+
+          <div class="form-field">
+            <label for="music">Musikwunsch <span class="req">*</span></label>
+            <input
+              id="music"
+              type="text"
+              formControlName="music"
+              placeholder="Dein Lieblingslied für die Tanzfläche"
+              maxlength="100"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="special">Sonstiges</label>
+            <textarea
+              id="special"
+              formControlName="special"
+              placeholder="Alles was wir wissen sollten ..."
+              maxlength="999"
+              rows="3"
+            ></textarea>
+          </div>
+
+        }
+
+        <button type="submit" class="rsvp-submit" [disabled]="form.invalid">
+          Anmelden
+        </button>
+
+      </form>
+      } <!-- end @else -->
+    </div>
+  </div>
+}
