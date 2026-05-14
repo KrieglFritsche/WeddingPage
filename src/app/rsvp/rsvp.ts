@@ -14,6 +14,9 @@ export class Rsvp implements OnInit, OnDestroy {
 
   isSubmitted = signal(false); // localStorage.getItem(this.STORAGE_KEY) === 'true'
   isOpen = signal(false);
+  isWiggling = signal(false);
+
+  private wiggleInterval: ReturnType<typeof setInterval> | null = null;
 
   form = new FormGroup({
     website:       new FormControl(''),
@@ -42,6 +45,28 @@ export class Rsvp implements OnInit, OnDestroy {
   get showbeamer() { return this.form.get('showbeamer')!.value; }
   get absence()    { return this.form.get('absence')!.value; }
 
+  private readonly fieldLabels: Record<string, string> = {
+    name:        'Name',
+    attending:   'Teilnahme',
+    absence:     'Was trifft zu?',
+    plusone:     'Begleitung',
+    plusonename: 'Name der Begleitung',
+    phone:       'Bevorzugter Kontakt (Email/Tel.)',
+    children:    'Kinder dabei?',
+    food:        'Essen',
+    allergies:   'Allergien',
+    show:        'Beitrag geplant?',
+    showlength:  'Beitrag Länge',
+    showbeamer:  'Beamer oder Leinwand benötigt?',
+    music:       'Musikwunsch',
+  };
+
+  get missingFields(): string[] {
+    return Object.entries(this.fieldLabels)
+      .filter(([key]) => this.form.get(key)?.errors?.['required'])
+      .map(([, label]) => label);
+  }
+
   private require(...fields: string[]) {
     for (const f of fields) {
       const c = this.form.get(f)!;
@@ -58,11 +83,19 @@ export class Rsvp implements OnInit, OnDestroy {
     }
   }
 
+  private startWiggleTimer() {
+    this.wiggleInterval = setInterval(() => {
+      this.isWiggling.set(true);
+      setTimeout(() => this.isWiggling.set(false), 700);
+    }, 20000);
+  }
+
   ngOnInit() {
+    this.startWiggleTimer();
     this.subs.add(
       this.form.get('attending')!.valueChanges.subscribe(v => {
         if (v === 'Ja') {
-          this.require('plusone', 'phone', 'children', 'food', 'allergies', 'show', 'music');
+          this.require('plusone', 'phone', 'children', 'food', 'show');
           this.unrequire('absence');
           this.form.patchValue({ absence: '' }, { emitEvent: false });
         } else {
@@ -108,6 +141,7 @@ export class Rsvp implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subs.unsubscribe();
+    if (this.wiggleInterval) clearInterval(this.wiggleInterval);
   }
 
   @HostListener('document:keydown.escape')
@@ -117,16 +151,27 @@ export class Rsvp implements OnInit, OnDestroy {
 
   open() {
     this.isOpen.set(true);
+    this.isWiggling.set(false);
     document.body.style.overflow = 'hidden';
+    if (this.wiggleInterval) clearInterval(this.wiggleInterval);
   }
 
   close() {
     this.isOpen.set(false);
     document.body.style.overflow = '';
+    this.form.reset();
+    this.startWiggleTimer();
   }
 
   submit() {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      setTimeout(() => {
+        const el = document.querySelector('.rsvp-form .ng-invalid');
+        el?.closest('.form-field')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 0);
+      return;
+    }
     if (this.form.value.website) return;
 
     const v = this.form.value;

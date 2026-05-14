@@ -1,5 +1,5 @@
 @if (!isSubmitted()) {
-  <button class="rsvp-fab" (click)="open()">Zu- oder Absage</button>
+  <button class="rsvp-fab" [class.wiggle]="isWiggling()" (click)="open()">Zu- oder Absage</button>
 }
 
 @if (isOpen()) {
@@ -153,7 +153,7 @@
           </div>
 
           <div class="form-field">
-            <label for="allergies">Allergien <span class="req">*</span></label>
+            <label for="allergies">Allergien</label>
             <input
               id="allergies"
               type="text"
@@ -205,7 +205,7 @@
           }
 
           <div class="form-field">
-            <label for="music">Musikwunsch <span class="req">*</span></label>
+            <label for="music">Musikwunsch</label>
             <input
               id="music"
               type="text"
@@ -228,8 +228,12 @@
 
         }
 
-        <button type="submit" class="rsvp-submit" [disabled]="form.invalid">
-          Anmelden
+        @if (missingFields.length > 0) {
+          <p class="rsvp-missing">Fehlt: {{ missingFields.join(', ') }}</p>
+        }
+
+        <button type="submit" class="rsvp-submit">
+          {{ attending === 'Nein' ? 'Absagen' : 'Zusagen' }}
         </button>
 
       </form>

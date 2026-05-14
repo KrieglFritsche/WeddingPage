@@ -23,6 +23,10 @@
     box-shadow: 0 10px 32px rgba(0, 0, 0, 0.28);
     transform: translateX(-50%) translateY(-2px);
   }
+
+  &.wiggle {
+    animation: fabWiggle 0.7s ease;
+  }
 }
 
 .rsvp-overlay {
@@ -151,6 +155,14 @@
     &::placeholder {
       color: #c4bdb6;
     }
+
+    &.ng-invalid.ng-touched {
+      border-color: #c0392b;
+    }
+  }
+
+  &:has(input[type='radio'].ng-invalid.ng-touched) .radio-option {
+    border-color: #c0392b;
   }
 
   textarea {
@@ -196,6 +208,14 @@
   }
 }
 
+.rsvp-missing {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  color: var(--color-on-surface-variant);
+  margin-bottom: 0.875rem;
+  line-height: 1.5;
+}
+
 .rsvp-submit {
   width: 100%;
   margin-bottom: 0.25rem;
@@ -218,6 +238,16 @@
   &:not(:disabled):hover {
     background: #4a5240;
   }
+}
+
+@keyframes fabWiggle {
+  0%, 100% { transform: translateX(-50%) rotate(0deg); }
+  15%       { transform: translateX(-50%) rotate(-8deg); }
+  30%       { transform: translateX(-50%) rotate(8deg); }
+  45%       { transform: translateX(-50%) rotate(-5deg); }
+  60%       { transform: translateX(-50%) rotate(5deg); }
+  75%       { transform: translateX(-50%) rotate(-2deg); }
+  90%       { transform: translateX(-50%) rotate(2deg); }
 }
 
 @keyframes fadeIn {
