@@ -1,0 +1,7 @@
+@if (isOpen()) {
+  <div class="game-overlay" (click)="close()">
+    <div class="game-modal" (click)="$event.stopPropagation(); tap()">
+<canvas #canvas class="game-canvas"></canvas>
+    </div>
+  </div>
+}
