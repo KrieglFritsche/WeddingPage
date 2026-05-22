@@ -9,10 +9,10 @@ import { Subscription } from 'rxjs';
   styleUrl: './rsvp.scss',
 })
 export class Rsvp implements OnInit, OnDestroy {
-  // private readonly STORAGE_KEY = 'rsvp_submitted';
+  private readonly STORAGE_KEY = 'rsvp_submitted';
   private subs = new Subscription();
 
-  isSubmitted = signal(false); // localStorage.getItem(this.STORAGE_KEY) === 'true'
+  isSubmitted = signal(localStorage.getItem(this.STORAGE_KEY) === 'true');
   isOpen = signal(false);
   isWiggling = signal(false);
 
@@ -87,7 +87,7 @@ export class Rsvp implements OnInit, OnDestroy {
     this.wiggleInterval = setInterval(() => {
       this.isWiggling.set(true);
       setTimeout(() => this.isWiggling.set(false), 700);
-    }, 20000);
+    }, 10000);
   }
 
   ngOnInit() {
@@ -201,7 +201,7 @@ export class Rsvp implements OnInit, OnDestroy {
       body: body.toString(),
     });
 
-    // localStorage.setItem(this.STORAGE_KEY, 'true');
+    localStorage.setItem(this.STORAGE_KEY, 'true');
     this.isSubmitted.set(true);
   }
 }
