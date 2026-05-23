@@ -21,8 +21,8 @@ export class CloudLayer {
     }
   }
 
-  update(cw: number, ch: number) {
-    for (const cl of this.clouds) cl.x -= cl.speed;
+  update(cw: number, ch: number, dtScale: number) {
+    for (const cl of this.clouds) cl.x -= cl.speed * dtScale;
     this.clouds = this.clouds.filter(cl => cl.x + CLOUD_SRC_W * 3 > 0);
     const last = this.clouds[this.clouds.length - 1];
     if (!last || last.x < cw + 100) {

@@ -37,11 +37,11 @@ export class CactusLayer {
     this.spawnCooldown = 420 + Math.random() * 180;
   }
 
-  update(cw: number, speed: number) {
-    for (const c of this.cacti) c.x -= speed;
+  update(cw: number, speed: number, dtScale: number) {
+    for (const c of this.cacti) c.x -= speed * dtScale;
     this.cacti = this.cacti.filter(c => c.x + 100 > 0);
 
-    this.spawnCooldown -= speed;
+    this.spawnCooldown -= speed * dtScale;
     if (this.spawnCooldown <= 0) {
       const type = Math.floor(Math.random() * 5) as CactusType;
       this.cacti.push({ x: cw + 10, type });

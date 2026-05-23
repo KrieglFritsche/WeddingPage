@@ -18,8 +18,8 @@ export class GroundLayer {
       this.tiles.push({ x, variant: Math.floor(Math.random() * TILE_VARIANTS) });
   }
 
-  update(cw: number, speed: number) {
-    for (const t of this.tiles) t.x -= speed;
+  update(cw: number, speed: number, dtScale: number) {
+    for (const t of this.tiles) t.x -= speed * dtScale;
     this.tiles = this.tiles.filter(t => t.x + TILE_W > 0);
     const last = this.tiles[this.tiles.length - 1];
     if (last.x + TILE_W < cw + TILE_W)

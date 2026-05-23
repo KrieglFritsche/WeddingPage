@@ -27,13 +27,14 @@ export class Dog {
     this.frameTick = 0;
   }
 
-  update() {
+  update(dtScale: number) {
     if (!this.onGround) {
-      this.vy += GRAVITY;
-      this.y  += this.vy;
+      this.vy += GRAVITY * dtScale;
+      this.y  += this.vy * dtScale;
       if (this.y >= this.restY) { this.y = this.restY; this.vy = 0; this.onGround = true; }
     }
-    if (++this.frameTick >= 6) { this.frameTick = 0; this.frame = (this.frame + 1) % RUN_FRAMES; }
+    this.frameTick += dtScale;
+    if (this.frameTick >= 6) { this.frameTick %= 6; this.frame = (this.frame + 1) % RUN_FRAMES; }
   }
 
   render(ctx: CanvasRenderingContext2D, img: HTMLImageElement, dead: boolean) {

@@ -36,6 +36,7 @@ export class Game implements OnDestroy {
   private groundY = 0;
   private ticks   = 0;
   private speed   = GROUND_SPEED;
+  private lastTime = 0;
 
   constructor() {
     this.dogImg.src = '/game/dog.png';
@@ -74,6 +75,7 @@ export class Game implements OnDestroy {
     this.dog.reset();
     this.ticks = 0;
     this.speed = GROUND_SPEED;
+    this.lastTime = 0;
     this.ground.fill(c.width);
     this.clouds.fill(c.width, c.height);
     this.cacti.reset();
@@ -83,9 +85,11 @@ export class Game implements OnDestroy {
   }
 
   private tick() {
-    this.rafId = requestAnimationFrame(() => {
+    this.rafId = requestAnimationFrame((time) => {
       if (this.state() !== 'running') return;
-      this.update();
+      const dt = this.lastTime ? Math.min(time - this.lastTime, 50) : 16.667;
+      this.lastTime = time;
+      this.update(dt / 16.667);
       this.render();
       this.tick();
     });
@@ -95,16 +99,16 @@ export class Game implements OnDestroy {
 
   // ── update ─────────────────────────────────────────────────────────────────
 
-  private update() {
-    this.ticks++;
-    this.score.update(s => s + 1);
+  private update(dtScale: number) {
+    this.ticks += dtScale;
+    this.score.update(s => s + dtScale);
     this.speed = Math.min(MAX_SPEED, GROUND_SPEED + this.ticks * SPEED_RAMP);
 
     const c = this.canvasRef.nativeElement;
-    this.dog.update();
-    this.ground.update(c.width, this.speed);
-    this.clouds.update(c.width, c.height);
-    this.cacti.update(c.width, this.speed);
+    this.dog.update(dtScale);
+    this.ground.update(c.width, this.speed, dtScale);
+    this.clouds.update(c.width, c.height, dtScale);
+    this.cacti.update(c.width, this.speed, dtScale);
 
     if (this.cacti.checkCollision(this.dog.hitbox, this.groundY)) {
       this.gameOver();
