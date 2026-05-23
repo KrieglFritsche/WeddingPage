@@ -3,7 +3,7 @@ import {
   ViewChild, inject, signal, effect,
 } from '@angular/core';
 import { GameService } from './game.service';
-import { DOG_H, GROUND_SPEED, MAX_SPEED, SPEED_RAMP } from './game-constants';
+import { CANVAS_H, CANVAS_W, DOG_H, GROUND_SPEED, MAX_SPEED, SPEED_RAMP } from './game-constants';
 import { Dog } from './dog';
 import { GroundLayer } from './ground-layer';
 import { CloudLayer } from './cloud-layer';
@@ -57,10 +57,10 @@ export class Game implements OnDestroy {
   private boot() {
     const c = this.canvasRef?.nativeElement;
     if (!c) return;
-    c.width  = c.offsetWidth;
-    c.height = c.offsetHeight;
+    c.width  = CANVAS_W;
+    c.height = CANVAS_H;
     this.ctx     = c.getContext('2d')!;
-    this.groundY = c.height * 0.88;
+    this.groundY = CANVAS_H * 0.88;
     this.dog     = new Dog(this.groundY - DOG_H);
     this.ground.fill(c.width);
     this.clouds.fill(c.width, c.height);

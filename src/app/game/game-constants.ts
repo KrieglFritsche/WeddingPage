@@ -1,3 +1,5 @@
+export const CANVAS_W = 520, CANVAS_H = 320;
+
 export const FW = 48, FH = 32, SCALE = 3;
 export const DOG_W = FW * SCALE, DOG_H = FH * SCALE;
 export const RUN_ROW = 0, RUN_FRAMES = 8;
