@@ -3,10 +3,11 @@ import {
   ViewChild, inject, signal, effect,
 } from '@angular/core';
 import { GameService } from './game.service';
-import { DOG_H } from './game-constants';
+import { DOG_H, GROUND_SPEED, MAX_SPEED, SPEED_RAMP } from './game-constants';
 import { Dog } from './dog';
 import { GroundLayer } from './ground-layer';
 import { CloudLayer } from './cloud-layer';
+import { CactusLayer } from './cactus-layer';
 
 @Component({
   selector: 'app-game',
@@ -20,8 +21,8 @@ export class Game implements OnDestroy {
   @ViewChild('canvas') canvasRef!: ElementRef<HTMLCanvasElement>;
 
   isOpen    = this.svc.isOpen;
+  highScore = this.svc.highScore;
   score     = signal(0);
-  highScore = signal(0);
   state     = signal<'idle' | 'running' | 'gameover'>('idle');
 
   private ctx!: CanvasRenderingContext2D;
@@ -30,9 +31,11 @@ export class Game implements OnDestroy {
   private dog!: Dog;
   private ground  = new GroundLayer();
   private clouds  = new CloudLayer();
+  private cacti   = new CactusLayer();
   private rafId   = 0;
   private groundY = 0;
   private ticks   = 0;
+  private speed   = GROUND_SPEED;
 
   constructor() {
     this.dogImg.src = '/game/dog.png';
@@ -70,8 +73,10 @@ export class Game implements OnDestroy {
     const c = this.canvasRef.nativeElement;
     this.dog.reset();
     this.ticks = 0;
+    this.speed = GROUND_SPEED;
     this.ground.fill(c.width);
     this.clouds.fill(c.width, c.height);
+    this.cacti.reset();
     this.score.set(0);
     this.state.set('running');
     this.tick();
@@ -93,10 +98,17 @@ export class Game implements OnDestroy {
   private update() {
     this.ticks++;
     this.score.update(s => s + 1);
+    this.speed = Math.min(MAX_SPEED, GROUND_SPEED + this.ticks * SPEED_RAMP);
+
     const c = this.canvasRef.nativeElement;
     this.dog.update();
-    this.ground.update(c.width);
+    this.ground.update(c.width, this.speed);
     this.clouds.update(c.width, c.height);
+    this.cacti.update(c.width, this.speed);
+
+    if (this.cacti.checkCollision(this.dog.hitbox, this.groundY)) {
+      this.gameOver();
+    }
   }
 
   // ── render ─────────────────────────────────────────────────────────────────
@@ -109,17 +121,12 @@ export class Game implements OnDestroy {
 
     this.clouds.render(ctx);
     this.ground.render(ctx, this.groundY);
+    this.cacti.render(ctx, this.groundY);
     if (this.dogImgOk) this.dog.render(ctx, this.dogImg, dead);
-
-    // hitbox debug
-    const hb = this.dog.hitbox;
-    ctx.strokeStyle = 'rgba(255,0,0,0.7)';
-    ctx.lineWidth = 1.5;
-    ctx.strokeRect(hb.x, hb.y, hb.w, hb.h);
 
     // score
     const display = Math.floor(this.score() / 10).toString().padStart(5, '0');
-    const hi      = Math.floor(this.highScore() / 10).toString().padStart(5, '0');
+    const hi      = Math.floor(this.highScore() / 10).toString().padStart(5, '0');  // highScore stores raw ticks like score
     ctx.fillStyle = '#58614d';
     ctx.font      = `600 16px "Be Vietnam Pro", sans-serif`;
     ctx.textAlign = 'right';
@@ -146,8 +153,7 @@ export class Game implements OnDestroy {
   // ── actions ────────────────────────────────────────────────────────────────
 
   private gameOver() {
-    const s = Math.floor(this.score() / 10);
-    if (s > this.highScore()) this.highScore.set(s);
+    if (this.score() > this.highScore()) this.svc.saveHighScore(this.score());
     this.state.set('gameover');
     this.stop();
     this.render();

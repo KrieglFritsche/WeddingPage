@@ -1,4 +1,4 @@
-import { GROUND_SPEED, TILE_H, TILE_SRC_H, TILE_SRC_W, TILE_VARIANTS, TILE_W } from './game-constants';
+import { TILE_H, TILE_SRC_H, TILE_SRC_W, TILE_VARIANTS, TILE_W } from './game-constants';
 
 interface GroundTile { x: number; variant: number; }
 
@@ -18,8 +18,8 @@ export class GroundLayer {
       this.tiles.push({ x, variant: Math.floor(Math.random() * TILE_VARIANTS) });
   }
 
-  update(cw: number) {
-    for (const t of this.tiles) t.x -= GROUND_SPEED;
+  update(cw: number, speed: number) {
+    for (const t of this.tiles) t.x -= speed;
     this.tiles = this.tiles.filter(t => t.x + TILE_W > 0);
     const last = this.tiles[this.tiles.length - 1];
     if (last.x + TILE_W < cw + TILE_W)
