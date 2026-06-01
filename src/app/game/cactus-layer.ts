@@ -45,7 +45,7 @@ export class CactusLayer {
     if (this.spawnCooldown <= 0) {
       const type = Math.floor(Math.random() * 5) as CactusType;
       this.cacti.push({ x: cw + 10, type });
-      this.spawnCooldown = 300 + Math.random() * 320;
+      this.spawnCooldown = 450 + Math.random() * 250;
     }
   }
 

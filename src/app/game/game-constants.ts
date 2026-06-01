@@ -5,7 +5,7 @@ export const DOG_W = FW * SCALE, DOG_H = FH * SCALE;
 export const RUN_ROW = 0, RUN_FRAMES = 8;
 export const DEAD_ROW = 3;
 export const GRAVITY = 0.45, JUMP_VEL = -12, GROUND_SPEED = 5.5;
-export const MAX_SPEED = 11.25, SPEED_RAMP = 0.001;
+export const MAX_SPEED = 11.25, SPEED_RAMP = 0.002;
 
 export const TILE_SRC_W = 32, TILE_SRC_H = 16, TILE_VARIANTS = 5;
 export const TILE_W = TILE_SRC_W * 2, TILE_H = TILE_SRC_H * 2;

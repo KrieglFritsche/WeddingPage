@@ -34,7 +34,7 @@ export class Dog {
       if (this.y >= this.restY) { this.y = this.restY; this.vy = 0; this.onGround = true; }
     }
     this.frameTick += dtScale;
-    if (this.frameTick >= 6) { this.frameTick %= 6; this.frame = (this.frame + 1) % RUN_FRAMES; }
+    if (this.frameTick >= 4) { this.frameTick %= 4; this.frame = (this.frame + 1) % RUN_FRAMES; }
   }
 
   render(ctx: CanvasRenderingContext2D, img: HTMLImageElement, dead: boolean) {
