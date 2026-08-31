@@ -86,3 +86,96 @@
     }
   }
 }
+
+.parking {
+  margin-top: 4rem;
+}
+
+.parking-header {
+  text-align: center;
+  margin-bottom: 2rem;
+
+  h3 {
+    font-family: var(--font-serif);
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: var(--color-primary);
+    margin-bottom: 0.25rem;
+  }
+
+  p {
+    font-family: var(--font-sans);
+    font-size: 1.125rem;
+    font-weight: 300;
+    color: var(--color-secondary);
+    font-style: italic;
+  }
+}
+
+.parking-icon {
+  color: var(--color-secondary);
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.parking-image {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+
+  img {
+    width: 100%;
+    display: block;
+  }
+}
+
+.parking-steps {
+  list-style: none;
+  counter-reset: step;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 3rem;
+    min-height: 2rem;
+    display: flex;
+    align-items: center;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-on-surface-variant);
+
+    &::before {
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 2rem;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--color-secondary);
+      color: #fff;
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      font-weight: 500;
+    }
+  }
+}
+
+.parking-caption {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--color-on-surface-variant);
+  text-align: center;
+}
